@@ -8,6 +8,10 @@
   <include filename="$(find ur_description)/urdf/ur10.transmission.xacro" />
   <include filename="$(find ur_description)/urdf/ur10.gazebo.xacro" />
   <include filename="$(find ur_description)/urdf/materials.urdf.xacro" />
+  
+  <xacro:macro name="cylinder_model" params="length radius">
+    <cylinder length="${length}" radius="${radius}"/>
+  </xacro:macro>
 
 <!--
 DH for UR5:
@@ -91,7 +95,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-        <cylinder length="${0.04}" radius="${shoulder_radius+0.03}"/>
+        <xacro:cylinder_model length="${0.04}" radius="${shoulder_radius+0.03}"/>
       </geometry>
       <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0.0" />
     </collision>
@@ -121,7 +125,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-        <cylinder length="${base_collision_length}" radius="${shoulder_radius}"/>
+        <xacro:cylinder_model length="${base_collision_length}" radius="${shoulder_radius}"/>
       </geometry>
       <origin xyz="0.0 0.0 ${-shoulder_height + (base_collision_length/2.0)}" rpy="0.0 0.0 0.0" />
     </collision>
@@ -165,7 +169,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
   <link name="${prefix}upper_shoulder_link">
     <collision>
       <geometry>
-        <cylinder length="0.175" radius="${shoulder_radius}"/>
+        <xacro:cylinder_model length="0.175" radius="${shoulder_radius}"/>
       </geometry>
       <origin xyz="0.0 0.0 ${-(0.085-0.175/2.0)}" rpy="0.0 0.0 0.0" />
     </collision>
@@ -185,7 +189,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
   <link name="${prefix}upper_arm_middle_link">
     <collision>
       <geometry>
-          <cylinder length="0.45" radius="${0.105/2.0}"/>
+          <xacro:cylinder_model length="0.45" radius="${0.105/2.0}"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} 0.0 0.0" />
     </collision>
@@ -215,7 +219,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-          <cylinder length="0.26" radius="${0.12/2.0}"/>
+          <xacro:cylinder_model length="0.26" radius="${0.12/2.0}"/>
       </geometry>
       <origin xyz="0.0 ${0.26/2.0-0.065} 0.0" rpy="${pi/2.0} 0.0 0.0" />
     </collision>
@@ -236,7 +240,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
   <link name="${prefix}forearm_middle_link">
     <collision>
       <geometry>
-          <cylinder length="0.45" radius="${forearm_radius}"/>
+          <xacro:cylinder_model length="0.45" radius="${forearm_radius}"/>
       </geometry>
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </collision>
@@ -266,7 +270,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-        <cylinder length="${0.123}" radius="${wrist_radius}"/>
+        <xacro:cylinder_model length="${0.123}" radius="${wrist_radius}"/>
       </geometry>
       <origin xyz="0.0 ${0.123/2.0-0.057} 0.0" rpy="${-pi/2.0} 0.0 0.0" />
     </collision>
@@ -297,7 +301,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-        <cylinder length="0.123" radius="${wrist_radius}"/>
+        <xacro:cylinder_model length="0.123" radius="${wrist_radius}"/>
       </geometry>
       <origin xyz="0.0 0.0 ${0.123/2.0-0.057}" rpy="0.0 0.0 0.0" />
     </collision>
@@ -328,7 +332,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
 
     <collision>
       <geometry>
-          <cylinder length="${0.123+0.025}" radius="${wrist_radius}"/>
+          <xacro:cylinder_model length="${0.123+0.025}" radius="${wrist_radius}"/>
       </geometry>
       <origin xyz="0.0 ${(0.123+0.025)/2.0-0.057} 0.0" rpy="${-pi/2.0} 0.0 0.0" />
     </collision>
