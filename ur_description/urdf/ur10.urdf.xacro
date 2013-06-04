@@ -10,7 +10,8 @@
   <include filename="$(find ur_description)/urdf/materials.urdf.xacro" />
   
   <xacro:macro name="cylinder_model" params="length radius">
-    <cylinder length="${length}" radius="${radius}"/>
+    <!--<cylinder length="${length}" radius="${radius}"/> -->
+    <mesh filename="package://ur_description/meshes/unit_cyl.stl" scale="${radius} ${radius} ${length}"/>
   </xacro:macro>
 
 <!--
@@ -81,6 +82,10 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
   <property name="elbow_collision_length" value="0.200" />     <!-- manually measured -->
   <property name="elbow_collision_offset" value="0.035" />     <!-- manually measured -->
 
+  <property name="joint_limit_lower" value="${-2.0 * pi}" />
+  <property name="joint_limit_upper" value="${2.0 * pi}" />
+  <property name="joint_limit_effort" value="10.0" />
+  <property name="joint_limit_velocity" value="${pi}" />
 
 
   <xacro:macro name="ur10_robot" params="prefix">
@@ -111,7 +116,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}shoulder_link" />
     <origin xyz="0.0 0.0 ${shoulder_height}" rpy="0.0 0.0 0.0" />
     <axis xyz="0.0 0.0 1.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
   
@@ -142,7 +147,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}upper_arm_link" />
     <origin xyz="0.0 ${shoulder_offset} 0.0" rpy="0.0 ${pi / 2.0} 0.0" />    
     <axis xyz="0.0 1.0 0.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
 
@@ -205,7 +210,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}forearm_link" />
     <origin xyz="0.0 ${-elbow_offset} ${upper_arm_length}" rpy="0.0 0.0 0.0" />
     <axis xyz="0.0 1.0 0.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
 
@@ -256,7 +261,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}wrist_1_link" />
     <origin xyz="0.0 0.0 ${forearm_length}" rpy="0.0 ${pi / 2.0} 0.0" />
     <axis xyz="0.0 1.0 0.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
 
@@ -287,7 +292,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}wrist_2_link" />
     <origin xyz="0.0 ${wrist_1_length} 0.0" rpy="0.0 0.0 0.0" />
     <axis xyz="0.0 0.0 1.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
 
@@ -318,7 +323,7 @@ center_of_mass = [ [0.00008, -0.037, 0.00244], [0.38757, 0.00001, 0.15061], [0.1
     <child link = "${prefix}wrist_3_link" />
     <origin xyz="0.0 0.0 ${wrist_2_length}" rpy="0.0 0.0 0.0" />
     <axis xyz="0.0 1.0 0.0" />
-    <limit lower="${-2.0 * pi}" upper="${2.0 * pi}" effort="10.0" velocity="${pi}"/>
+    <limit lower="${joint_limit_lower}" upper="${joint_limit_upper}" effort="${joint_limit_effort}" velocity="${joint_limit_velocity}"/>
     <dynamics damping="10" friction="0.1"/>
   </joint>
 
