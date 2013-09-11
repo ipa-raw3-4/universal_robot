@@ -27,6 +27,81 @@ def driverProg():
     exit_critical
   end
   
+  receivedIO = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  thread urIOThread():
+ 
+   def get_digital_in_converter(ain):
+    if get_digital_in(ain) == True:
+     return 1
+    else:
+     return 0
+    end
+   end
+
+   def set_digital_out_converter(inID):
+    if receivedIO[inID] == 1:
+     return True
+    else:
+     return False
+    end
+   end
+
+   socket_open(HOSTNAME,50005,socket_name="urIO")
+
+   while True:
+
+    enter_critical	
+    receivedIO = socket_read_ascii_float(14, "urIO")
+    #textmsg(receivedIO)
+
+    # Ausgaenge setzen
+    set_digital_out(0, set_digital_out_converter(1))
+    set_digital_out(1, set_digital_out_converter(2))
+    set_digital_out(2, set_digital_out_converter(3))
+    set_digital_out(3, set_digital_out_converter(4))
+    set_digital_out(4, set_digital_out_converter(5))
+    set_digital_out(5, set_digital_out_converter(6))	
+    set_digital_out(6, set_digital_out_converter(7))
+    set_digital_out(7, set_digital_out_converter(8))
+    set_analog_out(0, receivedIO[9])
+    set_analog_out(1, receivedIO[10])
+    set_analog_outputdomain(0, receivedIO[11])
+    set_analog_outputdomain(1, receivedIO[12])
+    set_analog_inputrange(0, receivedIO[13])
+    set_analog_inputrange(1, receivedIO[14])
+    #textmsg("Hier")
+    # Eingaenge einlesen und absenden
+    socket_send_string("S", "urIO")
+    socket_send_string(get_digital_in_converter(0), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(1), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(2), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(3), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(4), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(5), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(6), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_digital_in_converter(7), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_analog_in(0), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string(get_analog_in(1), "urIO")
+    socket_send_string(",", "urIO")
+    socket_send_string("E", "urIO")
+    exit_critical
+
+    sync()
+
+   end
+
+  end
+
   thread statePublisherThread():
     def send_joint_state():
       q = get_joint_positions()
@@ -118,6 +193,7 @@ def driverProg():
 
   thread_state = run statePublisherThread()
   thread_servo = run servoThread()
+  thread_urIO = run urIOThread()
 
   # Servoes in a circle
   #movej([1.5,-0.4,-1.57,0,0,0], 3, 0.75, 1.0)
